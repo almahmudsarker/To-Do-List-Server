@@ -62,21 +62,32 @@ app.post('/tasks', async (req, res) => {
   }
 });
 
-app.put('/tasks/:id', async (req, res) => {
+app.put("/tasks/:id", async (req, res) => {
   const taskId = req.params.id;
   const { status } = req.body;
-
   try {
-    await tasksCollection.updateOne(
-      { _id: ObjectId(taskId) },
-      { $set: { status } }
+    const updatedTask = await tasksCollection.findOneAndUpdate(
+      { _id: new ObjectId(taskId) },
+      { $set: { status } },
+      { returnOriginal: false }
     );
 
-    const updatedTask = await tasksCollection.findOne({ _id: ObjectId(taskId) });
     res.json(updatedTask);
   } catch (error) {
-    console.error('Error updating task:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating task:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/tasks/:id", async (req, res) => {
+  const taskId = req.params.id;
+
+  try {
+    await tasksCollection.deleteOne({ _id: new ObjectId(taskId) });
+    res.status(204).end();
+  } catch (error) {
+    console.error("Error removing task:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
