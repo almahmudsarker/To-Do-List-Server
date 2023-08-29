@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
   res.send('Your Server is running..');
 });
 
-app.get('/api/tasks', async (req, res) => {
+app.get('/tasks', async (req, res) => {
   try {
     const tasks = await tasksCollection.find().toArray();
     res.json(tasks);
@@ -49,7 +49,7 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
-app.post('/api/tasks', async (req, res) => {
+app.post('/tasks', async (req, res) => {
   const newTask = req.body;
 
   try {
@@ -62,7 +62,7 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-app.put('/api/tasks/:id', async (req, res) => {
+app.put('/tasks/:id', async (req, res) => {
   const taskId = req.params.id;
   const { status } = req.body;
 
