@@ -64,11 +64,12 @@ app.post('/tasks', async (req, res) => {
 
 app.put("/tasks/:id", async (req, res) => {
   const taskId = req.params.id;
-  const { status } = req.body;
+  const { status, description } = req.body; 
+
   try {
     const updatedTask = await tasksCollection.findOneAndUpdate(
       { _id: new ObjectId(taskId) },
-      { $set: { status } },
+      { $set: { status, description } },
       { returnOriginal: false }
     );
 
